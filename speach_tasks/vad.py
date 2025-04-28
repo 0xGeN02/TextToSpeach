@@ -4,7 +4,17 @@ import wave
 import webrtcvad
 
 
-def read_wave(path):
+def read_wave(path: str) -> tuple:
+    """
+    Reads a .wav file and returns the PCM data and sample rate.
+    Args:
+        path (str): Path to the .wav file.   
+    Returns:
+        tuple: PCM data and sample rate.
+    Raises:
+        ValueError: If the audio file is not mono, has an invalid sample width, or has an invalid sample rate.
+        FileNotFoundError: If the audio file does not exist.
+    """
     with contextlib.closing(wave.open(path, 'rb')) as wf:
         num_channels = wf.getnchannels()
         if num_channels != 1:
@@ -19,7 +29,18 @@ def read_wave(path):
         return pcm_data, sample_rate
 
 
-def detect_speech_regions(audio_path: str):
+def detect_speech_regions(audio_path: str) -> list:
+    """
+    Detect speech regions in an audio file using WebRTC VAD.
+    Args:
+        audio_path (str): Path to the audio file.
+        frame_duration (int): Duration of each frame in milliseconds.
+    Returns:
+        list: List of speech regions in milliseconds.
+    Raises:
+        FileNotFoundError: If the audio file does not exist.
+        ValueError: If the audio file is not mono, has an invalid sample width, or has an invalid sample rate.
+    """
     audio, sample_rate = read_wave(audio_path)
     vad = webrtcvad.Vad(3)  # Aggressiveness 0-3
     frame_duration = 30  # ms
@@ -29,6 +50,8 @@ def detect_speech_regions(audio_path: str):
     speech_regions = []
     timestamp = 0
     for frame in frames:
+        if len(frame) != frame_size:
+            continue  # Salta frames incompletos
         is_speech = vad.is_speech(frame, sample_rate)
         if is_speech:
             speech_regions.append(timestamp)
