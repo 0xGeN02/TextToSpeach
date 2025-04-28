@@ -17,7 +17,7 @@ def main():
     5. Synthesize speech using external TTS (ElevenLabs).
     6. Detect speech regions in the audio file.
     """
-    audio_file = "./audio/sample/sample.wav"
+    audio_file = "./audio/samples/sample.wav"
 
     # 1. Local STT
     print("[Local STT]", transcribe_local(audio_file))
