@@ -1,13 +1,17 @@
-from google.cloud import speech_v1 as speech
+import speech_recognition as sr
 
-def transcribe_external(audio_path: str, language_code: str = "en-US") -> str:
-    client = speech.SpeechClient()
-    with open(audio_path, "rb") as audio_file:
-        content = audio_file.read()
-    audio = speech.RecognitionAudio(content=content)
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        language_code=language_code,
-    )
-    response = client.recognize(config=config, audio=audio)
-    return " ".join(result.alternatives[0].transcript for result in response.results)
+def transcribe_external(audio_path: str) -> str:
+    """
+    Transcribe audio using an external STT service (Google Speech Recognition).
+    """
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_path) as source:
+        audio = recognizer.record(source)
+
+    try:
+        text = recognizer.recognize_google(audio)
+        return text
+    except sr.UnknownValueError:
+        return "Google Speech Recognition could not understand audio"
+    except sr.RequestError as e:
+        return f"Could not request results from Google Speech Recognition service; {e}"

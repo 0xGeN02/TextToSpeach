@@ -5,7 +5,7 @@ description = "A project demonstrating various speech tasks"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 # Local STT
 vosk = "^0.3.45"
 # Local TTS
@@ -16,6 +16,10 @@ webrtcvad = "^2.0.10"
 google-cloud-speech = "^2.20.0"
 google-cloud-texttospeech = "^2.15.0"
 wave = "^0.0.2"
+gtts = "^2.5.4"
+elevenlabs = "^1.57.0"
+elevenlabslib = "^0.32.0"
+speechrecognition = "^3.14.2"
 
 [tool.poetry.scripts]
 run = "main:main"

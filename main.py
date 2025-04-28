@@ -1,9 +1,9 @@
 import os
-from speech_tasks.local_stt import transcribe_local
-from speech_tasks.local_tts import speak_local
-from speech_tasks.external_stt import transcribe_external
-from speech_tasks.external_tts import synthesize_external
-from speech_tasks.vad import detect_speech_regions
+from speach_tasks.local_stt import transcribe_local
+from speach_tasks.local_tts import speak_local
+from speach_tasks.external_stt import transcribe_external
+from speach_tasks.external_tts import synthesize_external
+from speach_tasks.vad import detect_speech_regions
 
 
 def main():

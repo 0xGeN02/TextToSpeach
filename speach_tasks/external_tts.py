@@ -8,12 +8,6 @@ except ImportError:
 
 
 def synthesize_external(text: str, output_path: str, lang: str = "en", engine: str = "gtts", **kwargs):
-    """
-    Supports two engines:
-      - "gtts": free Google Translate TTS
-      - "elevenlabs": ElevenLabs API
-    For ElevenLabs, set ELEVENLABS_API_KEY env var and pass voice_name in kwargs.
-    """
     if engine == "gtts":
         tts = gTTS(text=text, lang=lang)
         tts.save(output_path)
@@ -27,12 +21,10 @@ def synthesize_external(text: str, output_path: str, lang: str = "en", engine: s
         voice_name = kwargs.get("voice_name", None)
         if not voice_name:
             raise ValueError("Provide voice_name for ElevenLabs TTS.")
-        # Retrieve the voice by name
         voices = user.get_available_voices()
         voice = next((v for v in voices if v.name == voice_name), None)
         if not voice:
             raise ValueError(f"Voice '{voice_name}' not found in ElevenLabs account.")
-        # Generate and save
         voice.generate_and_save_audio(text=text, file_path=output_path)
     else:
         raise ValueError(f"Unsupported TTS engine: {engine}")
