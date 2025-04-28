@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "speech_poetry_project"
+version = "0.1.0"
+description = "A project demonstrating various speech tasks"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+# Local STT
+vosk = "^0.3.45"
+# Local TTS
+pyttsx3 = "^2.90"
+# Voice Activity Detection
+webrtcvad = "^2.0.10"
+# Google Cloud APIs
+google-cloud-speech = "^2.20.0"
+google-cloud-texttospeech = "^2.15.0"
+wave = "^0.0.2"
+
+[tool.poetry.scripts]
+run = "main:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
