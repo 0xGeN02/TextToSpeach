@@ -1,26 +1,36 @@
+
+import contextlib
 import wave
 import webrtcvad
 
-def detect_speech_regions(audio_path: str, aggressiveness: int = 1):
-    vad = webrtcvad.Vad(aggressiveness)
-    wf = wave.open(audio_path, "rb")
-    rate = wf.getframerate()
-    frame_ms = 30
-    frame_bytes = int(rate * frame_ms / 1000) * wf.getsampwidth()
 
-    regions = []
-    in_speech = False
-    ms_index = 0
+def read_wave(path):
+    with contextlib.closing(wave.open(path, 'rb')) as wf:
+        num_channels = wf.getnchannels()
+        if num_channels != 1:
+            raise ValueError("Audio must be mono")
+        sample_width = wf.getsampwidth()
+        if sample_width != 2:
+            raise ValueError("Sample width must be 2")
+        sample_rate = wf.getframerate()
+        if sample_rate not in (8000, 16000, 32000, 48000):
+            raise ValueError("Invalid sample rate")
+        pcm_data = wf.readframes(wf.getnframes())
+        return pcm_data, sample_rate
 
-    while frame := wf.readframes(int(rate * frame_ms / 1000)):
-        is_speech = vad.is_speech(frame, rate)
-        t = ms_index * frame_ms
-        if is_speech and not in_speech:
-            start = t
-            in_speech = True
-        elif not is_speech and in_speech:
-            regions.append((start, t))
-            in_speech = False
-        ms_index += 1
-    wf.close()
-    return regions
+
+def detect_speech_regions(audio_path: str):
+    audio, sample_rate = read_wave(audio_path)
+    vad = webrtcvad.Vad(3)  # Aggressiveness 0-3
+    frame_duration = 30  # ms
+    frame_size = int(sample_rate * frame_duration / 1000) * 2
+    frames = [audio[i:i + frame_size] for i in range(0, len(audio), frame_size)]
+
+    speech_regions = []
+    timestamp = 0
+    for frame in frames:
+        is_speech = vad.is_speech(frame, sample_rate)
+        if is_speech:
+            speech_regions.append(timestamp)
+        timestamp += frame_duration
+    return speech_regions

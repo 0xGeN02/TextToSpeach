@@ -7,7 +7,7 @@ from speach_tasks.vad import detect_speech_regions
 
 
 def main():
-    audio_file = "sample.wav"
+    audio_file = "./audio/sample.wav"
 
     # 1. Local STT
     print("[Local STT]", transcribe_local(audio_file))
