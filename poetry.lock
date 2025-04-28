@@ -4975,6 +4975,21 @@ files = [
 dev = ["build", "flake8", "mypy", "pytest", "twine"]
 
 [[package]]
+name = "python-dotenv"
+version = "1.1.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "python_dotenv-1.1.0-py3-none-any.whl", hash = "sha256:d7c01d9e2293916c18baf562d95698754b0dbbb5e74d457c45d4f6561fb9d55d"},
+    {file = "python_dotenv-1.1.0.tar.gz", hash = "sha256:41f90bc6f5f177fb41f53e87666db362025010eb28f60a01c9143bfa33a2b2d5"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "python-levenshtein"
 version = "0.27.1"
 description = "Python extension for computing string edit distances and similarities."
@@ -5261,6 +5276,27 @@ files = [
 
 [package.dependencies]
 pyasn1 = ">=0.1.3"
+
+[[package]]
+name = "setuptools"
+version = "80.0.0"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "setuptools-80.0.0-py3-none-any.whl", hash = "sha256:a38f898dcd6e5380f4da4381a87ec90bd0a7eec23d204a5552e80ee3cab6bd27"},
+    {file = "setuptools-80.0.0.tar.gz", hash = "sha256:c40a5b3729d58dd749c0f08f1a07d134fb8a0a3d7f87dc33e7c5e1f762138650"},
+]
+
+[package.extras]
+check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\"", "ruff (>=0.8.0) ; sys_platform != \"cygwin\""]
+core = ["importlib_metadata (>=6) ; python_version < \"3.10\"", "jaraco.functools (>=4)", "jaraco.text (>=3.7)", "more_itertools", "more_itertools (>=8.8)", "packaging (>=24.2)", "platformdirs (>=4.2.2)", "tomli (>=2.0.1) ; python_version < \"3.11\"", "wheel (>=0.43.0)"]
+cover = ["pytest-cov"]
+doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "pyproject-hooks (!=1.1)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier", "towncrier (<24.7)"]
+enabler = ["pytest-enabler (>=2.2)"]
+test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21) ; python_version >= \"3.9\" and sys_platform != \"cygwin\"", "jaraco.envs (>=2.2)", "jaraco.path (>=3.7.2)", "jaraco.test (>=5.5)", "packaging (>=24.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.*)", "pytest-home (>=0.5)", "pytest-perf ; sys_platform != \"cygwin\"", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel (>=0.44.0)"]
+type = ["importlib_metadata (>=7.0.2) ; python_version < \"3.10\"", "jaraco.develop (>=7.21) ; sys_platform != \"cygwin\"", "mypy (==1.14.*)", "pytest-mypy"]
 
 [[package]]
 name = "sniffio"
@@ -5645,4 +5681,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "b02e147d2a570d070828f3e5f3c1ca78b3500821e53fb1194a32a8235812a9e1"
+content-hash = "2e9e84cfe7e46be8bcc12dcfd22d2b7a472b22590ff2efc47dafd6ebb5bc9447"
