@@ -1,30 +1,43 @@
-import os
+from elevenlabs.client import ElevenLabs
+from dotenv import load_dotenv
 from gtts import gTTS
-try:
-    from elevenlabslib import ElevenLabsUser
-    ELEVENLABS_AVAILABLE = True
-except ImportError:
-    ELEVENLABS_AVAILABLE = False
+import os
 
-
-def synthesize_external(text: str, output_path: str, lang: str = "en", engine: str = "gtts", **kwargs):
+def synthesize_external(text: str, output_path: str, lang: str = "en", engine: str = "elevenlabs", **kwargs):
+    """
+    Synthesize speech using an external TTS engine.
+    Currently supports gTTS and ElevenLabs.
+    
+    Parameters:
+    - text (str): The text to synthesize.
+    - output_path (str): The path to save the synthesized audio file.
+    - lang (str): The language code for the TTS engine (default: "en").
+    - engine (str): The TTS engine to use ("gtts" or "elevenlabs").
+    - **kwargs: Additional arguments for the TTS engine.
+    
+    Returns:
+    - None: The synthesized audio is saved to the specified output path.
+    """
     if engine == "gtts":
-        tts = gTTS(text=text, lang=lang)
+        # Use gTTS for text-to-speech synthesis
+        tts = gTTS(text=text, lang=lang, slow=False, **kwargs)
         tts.save(output_path)
+
     elif engine == "elevenlabs":
-        if not ELEVENLABS_AVAILABLE:
-            raise ImportError("Please install elevenlabslib: poetry add elevenlabslib")
-        api_key = os.getenv("ELEVENLABS_API_KEY")
-        if not api_key:
-            raise EnvironmentError("Set ELEVENLABS_API_KEY for ElevenLabs authentication.")
-        user = ElevenLabsUser(api_key)
-        voice_name = kwargs.get("voice_name", None)
-        if not voice_name:
-            raise ValueError("Provide voice_name for ElevenLabs TTS.")
-        voices = user.get_available_voices()
-        voice = next((v for v in voices if v.name == voice_name), None)
-        if not voice:
-            raise ValueError(f"Voice '{voice_name}' not found in ElevenLabs account.")
-        voice.generate_and_save_audio(text=text, file_path=output_path)
-    else:
-        raise ValueError(f"Unsupported TTS engine: {engine}")
+        # Load environment variables
+        load_dotenv()
+
+        client = ElevenLabs(
+        api_key=os.getenv("ELEVENLABS_API_KEY"),
+        )
+        audio_gen = client.text_to_speech.convert(
+            text="Hello from ElevenLabs TTS!, It's a pleasure to meet you!",
+            voice_id="JBFqnCBsd6RMkjVDRZzb",
+            model_id="eleven_multilingual_v2",
+            output_format="mp3_44100_128",
+        )
+
+        # Save the audio file
+        with open(output_path, "wb") as f:
+            for chunk in audio_gen:
+                f.write(chunk)
